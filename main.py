@@ -4,6 +4,9 @@ import smtplib
 from email.mime.text import MIMEText
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class GetDriverException(Exception):
@@ -47,11 +50,19 @@ def check_price(driver: webdriver.chrome.webdriver.WebDriver, link: str, establi
 
     try:
         xpath_expression = '//div[@id="apex_desktop_qualifiedBuybox"]/div[3]/div[1]/span[2]/span[2]/span[1]'
-        span_price_euros = driver.find_element("xpath", xpath_expression)
+
+        span_price_euros = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, xpath_expression))
+        )
+
         price_euros_string = span_price_euros.text
 
         xpath_expression = '//div[@id="apex_desktop_qualifiedBuybox"]/div[3]/div[1]/span[2]/span[2]/span[2]'
-        span_price_cents = driver.find_element("xpath", xpath_expression)
+
+        span_price_cents = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, xpath_expression))
+        )
+
         price_cents_string = span_price_cents.text
 
         euros = float(price_euros_string)
