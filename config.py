@@ -5,3 +5,5 @@ EMAIL_ADDRESS = "scostamagna.momo@gmail.com"
 PRODUCTS = {
     "https://www.amazon.it/": 200.00,
 }
+
+GMAIL_TOKEN = "burc lgqa zlkv zrry"

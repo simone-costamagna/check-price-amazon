@@ -23,7 +23,6 @@ def get_driver() -> webdriver.chrome.webdriver.WebDriver:
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-gpu")
         chrome_driver = webdriver.Chrome(options=chrome_options)
-
     except Exception as ex:
         raise GetDriverException('Cannot get the driver from Chrome.', str(ex))
 
@@ -40,7 +39,7 @@ def check_price(driver: webdriver.chrome.webdriver.WebDriver, link: str, establi
     :return: content of the email with the price information if the outcome is positive otherwise None
     """
 
-    driver.get(str)
+    driver.get(link)
 
     return driver.page_source
 
@@ -56,7 +55,7 @@ def send_email(address: str, subject: str, content: str):
     """
 
     # Obtain the security token to access the email inbox
-    GMAIL_TOKEN = os.environ["GMAIL_TOKEN"]
+    #GMAIL_TOKEN = os.environ["GMAIL_TOKEN"]
 
     message = MIMEText(content, _charset="utf-8")
     message["Subject"] = subject
@@ -72,11 +71,11 @@ def send_email(address: str, subject: str, content: str):
 
 
 if __name__ == "__main__":
-    send_email(EMAIL_ADDRESS, "Update from check-price-amazon", "Testing")
-
     driver = get_driver()
     for product_link, product_price in PRODUCTS.items():
         response = check_price(driver, product_link, product_price)
 
         if response is not None:
             send_email(EMAIL_ADDRESS, "Update from check-price-amazon", response)
+
+    driver.quit()
