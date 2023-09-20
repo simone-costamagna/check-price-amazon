@@ -29,6 +29,10 @@ def get_driver() -> webdriver.chrome.webdriver.WebDriver:
     return chrome_driver
 
 
+class CheckPrice(Exception):
+    pass
+
+
 def check_price(driver: webdriver.chrome.webdriver.WebDriver, link: str, established_price: float) -> str:
     """
     Verify the cost of an item and determine whether it falls below the established price.
@@ -55,9 +59,12 @@ def check_price(driver: webdriver.chrome.webdriver.WebDriver, link: str, establi
 
         price = euros + cents
     except Exception as ex:
-        raise GetPrice(f"Impossibly read the price.", str(ex))
+        raise CheckPrice(f"Impossibly read the price.", str(ex))
 
-    return str(price)
+    if price <= established_price:
+        return f"Product: {link}\nEstablished price: {established_price}\nCurrent price: {price}"
+    else:
+        return None
 
 
 def send_email(address: str, subject: str, content: str):
@@ -71,7 +78,7 @@ def send_email(address: str, subject: str, content: str):
     """
 
     # Obtain the security token to access the email inbox
-    #GMAIL_TOKEN = os.environ["GMAIL_TOKEN"]
+    GMAIL_TOKEN = os.environ["GMAIL_TOKEN"]
 
     message = MIMEText(content, _charset="utf-8")
     message["Subject"] = subject
