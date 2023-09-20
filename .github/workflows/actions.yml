@@ -2,7 +2,7 @@ name: run main.py
 
 on:
   schedule:
-    - cron: '0 0 * * 1' # At 00:00 on Monday
+    - cron: '*/10 * * * *' # Ogni 10 minuti
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
           python-version: '3.11.5' # install the python version needed
 
       - name: pull latest changes
-        run: git pull origin main
+        run: git pull origin master
 
       - name: install python packages
         run: |
@@ -41,4 +41,4 @@ jobs:
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          branch: master
