@@ -3,6 +3,8 @@ from config import *
 import smtplib
 from email.mime.text import MIMEText
 
+from selenium import webdriver
+
 
 class GetDriverException(Exception):
     pass
