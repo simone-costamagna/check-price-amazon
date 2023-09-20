@@ -1,34 +1,34 @@
-import logging
-import logging.handlers
 import os
+from config import *
+import smtplib
+from email.mime.text import MIMEText
 
-import requests
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-logger_file_handler = logging.handlers.RotatingFileHandler(
-    "status.log",
-    maxBytes=1024 * 1024,
-    backupCount=1,
-    encoding="utf8",
-)
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-logger_file_handler.setFormatter(formatter)
-logger.addHandler(logger_file_handler)
+def send_email(address: str, subject: str, content: str):
+    """
+    An email is generated and sent when provided with an email address, subject, and content
 
-try:
-    SOME_SECRET = os.environ["SOME_SECRET"]
-except KeyError:
-    SOME_SECRET = "Token not available!"
-    #logger.info("Token not available!")
-    #raise
+    :param address: recipient's email address
+    :param subject: subject of the email
+    :param content: content of the email
+    :return: None
+    """
+
+    # Obtain the security token to access the email inbox
+    GMAIL_TOKEN = os.environ["GMAIL_TOKEN"]
+
+    message = MIMEText(content, _charset="utf-8")
+    message["Subject"] = subject
+
+    email = smtplib.SMTP("smtp.gmail.com", 587)
+    email.ehlo()
+    email.starttls()
+    email.login("scostamagna.momo@gmail.com", GMAIL_TOKEN)
+
+    email.sendmail("scostamagna.momo@gmail.com", address, message.as_string())
+
+    email.quit()
 
 
 if __name__ == "__main__":
-    logger.info(f"Token value: {SOME_SECRET}")
-
-    r = requests.get('https://weather.talkpython.fm/api/weather/?city=Berlin&country=DE')
-    if r.status_code == 200:
-        data = r.json()
-        temperature = data["forecast"]["temp"]
-        logger.info(f'Weather in Berlin: {temperature}')
+    send_email(EMAIL_ADDRESS, "Update from check-price-amazon", "Testing")
