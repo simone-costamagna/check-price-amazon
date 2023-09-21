@@ -17,7 +17,7 @@ The project utilizes GitHub Actions to execute the algorithm, which reads and as
 ### Prerequisites
 
 Account on github;
-Python libraries listed in the "requirements" file;
+Python libraries listed in the "requirements" file.
 
 ### Installation
 
