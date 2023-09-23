@@ -29,19 +29,3 @@ jobs:
         env:
           GMAIL_TOKEN: ${{ secrets.GMAIL_TOKEN }}
         run: python main.py
-
-  cleanup:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Clean up old runs
-        run: |
-          DATE=$(date -d "yesterday" +%Y-%m-%dT%H:%M:%SZ)
-          for run in $(gh api -X GET "repos/${{ github.repository }}/actions/runs" --jq ".workflow_runs[] | select(.created_at < \"$DATE\") | .id"); do
-            gh api -X POST "repos/${{ github.repository }}/actions/runs/${run}/cancel"
-          done
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
