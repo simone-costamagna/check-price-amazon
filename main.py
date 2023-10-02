@@ -56,7 +56,7 @@ def check_price(driver: webdriver.chrome.webdriver.WebDriver, link: str, establi
         price_cents_string = span_price_cents.text
 
         euros = float(price_euros_string.replace(",", "."))
-        cents = float(price_cents_string(",", ".")) / 100
+        cents = float(price_cents_string.replace(",", ".")) / 100
 
         price = euros + cents
     except Exception as ex:
