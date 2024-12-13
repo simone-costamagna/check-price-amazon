@@ -1,24 +1,98 @@
-# Check price amazon
+# Amazon Price Tracker
 
-Monitors the prices of one or more Amazon products and sends an email notification if the price falls below a specified threshold.
-## Table of Contents
+This Python project automates price tracking for specified products on Amazon. When a product's price falls below a predefined threshold, it sends an email notification to a configured address. Additionally, a GitHub Actions workflow is included to schedule and automate script execution.
 
-- [Introduction](#introduction)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
+## Features
+- **Automated Price Tracking**: Fetches product prices directly from Amazon using Selenium.
+- **Email Notifications**: Sends email alerts when a product's price is below the set threshold.
+- **Easy Configuration**: Specify product links and price thresholds in a configuration file.
+- **Logging**: Provides detailed logs for debugging and tracking operations.
+- **GitHub Actions Integration**: Automate script execution at regular intervals.
 
-## Introduction
+---
 
-The project utilizes GitHub Actions to execute the algorithm, which reads and assesses the prices of Amazon products listed in the config.py file every 8 hours.
+## Prerequisites
 
-## Getting Started
+### 1. Python Dependencies
+Install the required Python packages using pip:
+```bash
+pip install -r requirements.txt
+```
 
-### Prerequisites
+### 2. Environment Variables
+Define the following environment variables:
+- `EMAIL_ADDRESS`: The email address used to send notifications.
+- `GMAIL_TOKEN`: A token or password for the email account.
 
-Account on github;
-Python libraries listed in the "requirements" file;
+Use a `.env` file or export these variables manually:
+```bash
+export EMAIL_ADDRESS="your_email@gmail.com"
+export GMAIL_TOKEN="your_email_account_token"
+```
 
-### Installation
+---
 
-To configure the 'config.py' file, please input the email address where you wish to receive notifications and make edits to the dictionary specifying the products you intend to monitor.
+## Configuration
+The products to track are defined in `config.py`. Each entry in the `PRODUCTS` dictionary specifies:
+- **Key**: Product URL on Amazon.
+- **Value**: Price threshold.
+
+Example:
+```python
+PRODUCTS = {
+    "https://www.amazon.it/example-product": 80.00,
+    "https://www.amazon.it/another-product": 25.00,
+}
+```
+
+---
+
+## Running the Project
+
+### Locally
+1. Clone the repository and navigate to the project directory:
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Run the script:
+   ```bash
+   python main.py
+   ```
+
+### Using GitHub Actions
+The project includes a `actions.yml` file to automate the execution of the script using GitHub Actions. This workflow allows you to run the script on a schedule without manual intervention.
+
+1. Ensure you have the following repository secrets configured:
+   - `EMAIL_ADDRESS`: The email address used for notifications.
+   - `GMAIL_TOKEN`: A token for the email account.
+
+2. Modify the `schedule` block in the `actions.yml` file to adjust the frequency of execution. For example:
+   ```yaml
+   schedule:
+     - cron: '0 22 * * 0'  # Runs every Sunday at 22:00 UTC
+   ```
+
+3. Commit and push the workflow file. GitHub Actions will execute the workflow according to the defined schedule.
+
+---
+
+## Project Structure
+- **`main.py`**: The main script handling price checking and email notifications.
+- **`config.py`**: Configuration file containing product links and price thresholds.
+- **`.github/workflows/actions.yml`**: GitHub Actions workflow file for scheduling script execution.
+- **`README.md`**: Documentation for the project.
+- **`requirements.txt`**: Python packages required.
+
+---
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+---
