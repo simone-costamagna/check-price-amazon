@@ -2,7 +2,7 @@ name: run main.py
 
 on:
   schedule:
-    - cron: '0 22 * * 0' # 10 minutes: '*/10 * * * *'; 1 hour: '0 * * * *'; '0 */8 * * *'  8 hours
+    - cron: '*/10 * * * *' # 10 minutes: '0 22 * * 0'; 1 hour: '0 * * * *'; '0 */8 * * *'  8 hours
 
 jobs:
   build:
@@ -28,4 +28,5 @@ jobs:
       - name: execute py script # run main.py
         env:
           GMAIL_TOKEN: ${{ secrets.GMAIL_TOKEN }}
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
         run: python main.py
