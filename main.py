@@ -1,10 +1,13 @@
 import config
 import os
+from dotenv import load_dotenv
 import logging
 import smtplib
 from email.mime.text import MIMEText
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+
+load_dotenv()
 
 # Constants for environment variables
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
@@ -75,8 +78,10 @@ def check_price(driver: webdriver.Chrome, link: str, established_price: float) -
 
         # Attempt to locate price elements
         try:
-            price_whole = driver.find_element("xpath", '//span[@class="a-price-whole"]').text
-            price_fraction = driver.find_element("xpath", '//span[@class="a-price-fraction"]').text
+            price_section = driver.find_element("xpath", '(//div[@class="a-section a-spacing-none aok-align-center aok-relative"])[1]')
+            price_span = price_section.find_element("xpath", './/span[contains(@class, "a-price")]')
+            price_whole = price_span.find_element("xpath", './span[2]/span[1]').text
+            price_fraction = price_span.find_element("xpath", './span[2]/span[2]').text
         except NoSuchElementException:
             logging.warning(f"Price elements not found for link: {link}")
             return False, ""
