@@ -1,10 +1,11 @@
-# Amazon Price Tracker
+# Check Price Amazon
 
 This Python project automates price tracking for specified products on Amazon. When a product's price falls below a predefined threshold, it sends an email notification to a configured address. Additionally, a GitHub Actions workflow is included to schedule and automate script execution.
 
 ## Features
 - **Automated Price Tracking**: Fetches product prices directly from Amazon using Selenium.
 - **Email Notifications**: Sends email alerts when a product's price is below the set threshold.
+- **Modular Design**: Clean and maintainable code organized into separate modules.
 - **Easy Configuration**: Specify product links and price thresholds in a configuration file.
 - **Logging**: Provides detailed logs for debugging and tracking operations.
 - **GitHub Actions Integration**: Automate script execution at regular intervals.
@@ -84,15 +85,17 @@ The project includes a `actions.yml` file to automate the execution of the scrip
 ---
 
 ## Project Structure
-- **`main.py`**: The main script handling price checking and email notifications.
+- **`main.py`**: Entry point for the project, coordinating tasks such as price checking and email notifications.
 - **`config.py`**: Configuration file containing product links and price thresholds.
+- **`logging_config.py`**: Handles logging setup and configuration.
+- **`webdriver_manager.py`**: Manages WebDriver initialization and cleanup.
+- **`price_checker.py`**: Contains logic for retrieving and validating product prices.
+- **`email_handler.py`**: Manages email notifications for price alerts.
 - **`.github/workflows/actions.yml`**: GitHub Actions workflow file for scheduling script execution.
-- **`README.md`**: Documentation for the project.
+- **`.env`**: File for storing environment variables (not included in the repository; add it locally).
 - **`requirements.txt`**: Python packages required.
 
 ---
 
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
-
----
